@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy Policy — Abdullah Store</title>
+<meta name="theme-color" content="#16A34A">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-page="privacy">
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Abdullah<span>Store</span></a>
+    <nav class="desktop-nav desktop-only" style="margin-left:auto">
+      <a href="index.html">Home</a><a href="products.html">Products</a>
+      <a href="categories.html">Categories</a><a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:20px;padding-bottom:40px;max-width:760px">
+  <h1 class="section-title" style="margin-bottom:20px">Privacy Policy</h1>
+  <div style="background:#fff;padding:24px;border-radius:12px;box-shadow:var(--shadow);line-height:1.8;color:var(--text)">
+    <p><strong>Last updated:</strong> <span id="year"></span></p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">1. Information We Collect</h2>
+    <p>When you register or place an order, we collect your name, email address, phone number, and delivery address. We also store your order history and notification preferences.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">2. How We Use Your Information</h2>
+    <p>Your information is used to process orders, deliver products, send order updates, and improve our services. We never sell your personal data to third parties.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">3. Data Storage</h2>
+    <p>Your data is stored securely using Google Firebase (Authentication, Firestore, and Storage). Passwords are hashed by Firebase and are never visible to us.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">4. Cookies &amp; Local Storage</h2>
+    <p>We use browser localStorage to save your shopping cart and login session. You can clear this at any time through your browser settings.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">5. Your Rights</h2>
+    <p>You may request access, correction, or deletion of your personal data by contacting us at contact@abdullahstore.com.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">6. Contact</h2>
+    <p>Questions about this policy? Email <a href="mailto:contact@abdullahstore.com" style="color:var(--green)">contact@abdullahstore.com</a>.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom">© <span id="year2"></span> Abdullah Store. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("year2").textContent = new Date().getFullYear();
+</script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

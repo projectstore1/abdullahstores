@@ -1,79 +1,84 @@
-/* =========================================================================
-   Abdullah Store — Utilities (English only, ES module)
-   ========================================================================= */
+/* Abdullah Store — Utilities (English, USD + NGN dual currency) */
 
 const LS_CART = "abdullah_cart_v1";
+const LS_RATE = "abdullah_usd_ngn_rate";
 
-/* ---------------- Static strings (English) ---------------- */
+export const DEFAULT_USD_TO_NGN = 1440;
+
+/* ============ STRINGS ============ */
 export const STRINGS = {
   siteName: "Abdullah Store",
-  tagline: "Premium products, delivered fast.",
   searchPlaceholder: "Search products...",
   emptyProducts: "No products found.",
   emptyOrders: "You have no orders yet.",
   emptyCart: "Your cart is empty.",
   emptyNotifications: "No notifications yet.",
-  emptyCategories: "No categories yet.",
   loading: "Loading...",
-  confirmDelete: "Are you sure? This action cannot be undone.",
+  confirmDelete: "Are you sure? This cannot be undone.",
   signInRequired: "Please sign in to continue.",
-  signInRequiredPage: "You must be signed in to view this page.",
   adminRequired: "Admin access required.",
-  cart: {
-    title: "Your Cart",
-    subtotal: "Subtotal",
-    delivery: "Delivery Fee",
-    discount: "Discount",
-    total: "Total",
-    checkout: "Checkout",
-    continueShopping: "Continue Shopping",
-    remove: "Remove",
-    empty: "Your cart is empty."
-  },
   status: {
-    Pending: "Pending",
-    Confirmed: "Confirmed",
-    Processing: "Processing",
-    Shipped: "Shipped",
-    Completed: "Completed",
-    Cancelled: "Cancelled"
-  },
-  toasts: {
-    cartAdded: "Added to cart",
-    cartRemoved: "Removed from cart",
-    saved: "Saved",
-    deleted: "Deleted",
-    error: "Something went wrong",
-    loginRequired: "Please log in first",
-    notAdmin: "You do not have admin access",
-    copied: "Copied to clipboard"
+    Pending: "Pending", Confirmed: "Confirmed", Processing: "Processing",
+    Shipped: "Shipped", Completed: "Completed", Cancelled: "Cancelled"
   }
 };
 
-/* ---------------- Currency ---------------- */
-export function formatCurrency(amount, currency) {
-  const n = Number(amount || 0);
-  const cur = currency || "BDT";
+/* ============ EXCHANGE RATE ============ */
+export function getUsdToNgnRate() {
+  const n = Number(localStorage.getItem(LS_RATE));
+  return Number.isFinite(n) && n > 0 ? n : DEFAULT_USD_TO_NGN;
+}
+export function setUsdToNgnRate(rate) {
+  const n = Number(rate);
+  if (!Number.isFinite(n) || n <= 0) return;
+  localStorage.setItem(LS_RATE, String(n));
+  document.dispatchEvent(new CustomEvent("currencyratechanged", { detail: { rate: n } }));
+}
+export async function refreshExchangeRate() {
   try {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency", currency: cur, maximumFractionDigits: 0
-    }).format(n);
-  } catch {
-    return "৳" + n.toLocaleString("en-US");
-  }
+    const res = await fetch("https://open.er-api.com/v6/latest/USD", { cache: "no-store" });
+    if (!res.ok) return getUsdToNgnRate();
+    const data = await res.json();
+    const ngn = data?.rates?.NGN;
+    if (Number.isFinite(ngn) && ngn > 0) { setUsdToNgnRate(ngn); return ngn; }
+  } catch {}
+  return getUsdToNgnRate();
+}
+
+/* ============ FORMATTERS ============ */
+export function formatUSD(amount) {
+  const n = Number(amount || 0);
+  return new Intl.NumberFormat("en-US", {
+    style: "currency", currency: "USD",
+    minimumFractionDigits: 2, maximumFractionDigits: 2
+  }).format(n);
+}
+export function usdToNgn(usd) { return Number(usd || 0) * getUsdToNgnRate(); }
+export function formatNGN(usd) {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency", currency: "NGN",
+    minimumFractionDigits: 0, maximumFractionDigits: 0
+  }).format(usdToNgn(usd));
+}
+export function formatCurrency(amount) { return formatUSD(amount); }
+export function formatDual(usd) { return `${formatUSD(usd)}  •  ${formatNGN(usd)}`; }
+export function formatDualHTML(usd, opts) {
+  const size = (opts && opts.size) || "md";
+  return `<span class="price-dual price-dual-${size}">
+    <span class="price-usd">${formatUSD(usd)}</span>
+    <span class="price-ngn">≈ ${formatNGN(usd)}</span>
+  </span>`;
 }
 
 export function formatDate(ts) {
   if (!ts) return "";
-  let d;
-  if (typeof ts.toDate === "function") d = ts.toDate();
-  else if (typeof ts === "number") d = new Date(ts);
-  else d = new Date(ts);
+  const d = typeof ts.toDate === "function" ? ts.toDate()
+          : typeof ts === "number" ? new Date(ts) : new Date(ts);
   if (isNaN(d.getTime())) return "";
   return d.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
 }
 
-/* ---------------- Toast ---------------- */
+/* ============ TOAST ============ */
 function ensureToastContainer() {
   let el = document.getElementById("as-toast-container");
   if (!el) {
@@ -88,22 +93,19 @@ function ensureToastContainer() {
 }
 export function toast(message, opts) {
   const { type = "info", duration = 3200 } = opts || {};
-  const container = ensureToastContainer();
+  const c = ensureToastContainer();
   const el = document.createElement("div");
   el.className = "toast toast-" + type;
   el.innerHTML = `<span class="toast-msg"></span><button class="toast-close" aria-label="Close">✕</button>`;
   el.querySelector(".toast-msg").textContent = message;
   el.querySelector(".toast-close").onclick = () => el.remove();
-  container.appendChild(el);
+  c.appendChild(el);
   requestAnimationFrame(() => el.classList.add("toast-show"));
-  setTimeout(() => {
-    el.classList.remove("toast-show");
-    setTimeout(() => el.remove(), 250);
-  }, duration);
+  setTimeout(() => { el.classList.remove("toast-show"); setTimeout(() => el.remove(), 250); }, duration);
   return el;
 }
 
-/* ---------------- Confirm dialog ---------------- */
+/* ============ CONFIRM DIALOG ============ */
 export function confirmDialog(message, opts) {
   const { title = "Confirm", okText = "Confirm", cancelText = "Cancel" } = opts || {};
   return new Promise((resolve) => {
@@ -124,18 +126,14 @@ export function confirmDialog(message, opts) {
     wrap.querySelector('[data-act="ok"]').textContent = okText;
     document.body.appendChild(wrap);
     requestAnimationFrame(() => wrap.classList.add("open"));
-    const close = (r) => {
-      wrap.classList.remove("open");
-      setTimeout(() => wrap.remove(), 200);
-      resolve(r);
-    };
+    const close = (r) => { wrap.classList.remove("open"); setTimeout(() => wrap.remove(), 200); resolve(r); };
     wrap.querySelector('[data-act="cancel"]').onclick = () => close(false);
     wrap.querySelector('[data-act="ok"]').onclick = () => close(true);
     wrap.addEventListener("click", (e) => { if (e.target === wrap) close(false); });
   });
 }
 
-/* ---------------- Loading ---------------- */
+/* ============ LOADING ============ */
 export function showLoading(msg) {
   hideLoading();
   const el = document.createElement("div");
@@ -149,15 +147,14 @@ export function hideLoading() {
   if (el) el.remove();
 }
 
-/* ---------------- Helpers ---------------- */
+/* ============ HELPERS ============ */
 export function debounce(fn, wait = 300) {
-  let timeout;
+  let to;
   return function (...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn.apply(this, args), wait);
+    clearTimeout(to);
+    to = setTimeout(() => fn.apply(this, args), wait);
   };
 }
-
 export function escapeHtml(str) {
   if (str == null) return "";
   return String(str)
@@ -165,7 +162,7 @@ export function escapeHtml(str) {
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-/* ---------------- Placeholder image (inline SVG, no file needed) ---------- */
+/* ============ PLACEHOLDER IMAGE (inline SVG) ============ */
 export const PLACEHOLDER_IMAGE =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
@@ -173,7 +170,7 @@ export const PLACEHOLDER_IMAGE =
       <rect width="400" height="400" fill="#F1F5F9"/>
       <path d="M120 260 L200 140 L280 260 Z" fill="#E2E8F0"/>
       <circle cx="150" cy="180" r="20" fill="#CBD5E1"/>
-      <text x="200" y="330" font-family="Arial, sans-serif" font-size="20"
+      <text x="200" y="330" font-family="Arial,sans-serif" font-size="20"
             text-anchor="middle" fill="#94A3B8">No Image</text>
     </svg>`
   );
@@ -185,7 +182,7 @@ export function imageUrl(value) {
   return PLACEHOLDER_IMAGE;
 }
 
-/* ---------------- Cart ---------------- */
+/* ============ CART (stored in USD) ============ */
 export function getCart() {
   try {
     const raw = localStorage.getItem(LS_CART);
@@ -212,11 +209,11 @@ export function addToCart(product, qty = 1) {
     quantity
   });
   setCart(items);
-  toast(STRINGS.toasts.cartAdded, { type: "success" });
+  toast("Added to cart", { type: "success" });
 }
 export function removeFromCart(productId) {
   setCart(getCart().filter((i) => i.productId !== productId));
-  toast(STRINGS.toasts.cartRemoved, { type: "info" });
+  toast("Removed from cart", { type: "info" });
 }
 export function updateCartQuantity(productId, quantity) {
   const q = Math.max(1, parseInt(quantity, 10) || 1);
@@ -237,7 +234,7 @@ export function updateCartBadge() {
   });
 }
 
-/* ---------------- Icon factory ---------------- */
+/* ============ ICON SVG ============ */
 export const iconSVG = (name) => {
   const icons = {
     home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>`,
@@ -247,13 +244,12 @@ export const iconSVG = (name) => {
     search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>`,
     menu: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`,
     close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
-    sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></svg>`,
     logout: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H5v16h4"/><path d="M15 8l4 4-4 4"/><path d="M19 12H9"/></svg>`
   };
   return icons[name] || "";
 };
 
-/* ---------------- Bootstrap ---------------- */
+/* ============ BOOTSTRAP ============ */
 export function bootstrapUtilities() {
   document.documentElement.setAttribute("lang", "en");
   updateCartBadge();

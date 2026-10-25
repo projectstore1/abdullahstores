@@ -1,1 +1,130 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
 
+    // ====== HELPERS ======
+    function isSignedIn() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(uid())).data;
+    }
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(uid()))
+        && userDoc().role == 'admin';
+    }
+    function isValidId(id) { return id is string && id.size() > 0 && id.size() < 128; }
+
+    // ====== USERS ======
+    // Owner can read their own; admin can read all.
+    // Owner can create their own doc ONLY with role == 'customer'.
+    // Owner can update name/phone/photo/address but NOT role/createdAt/email.
+    match /users/{userId} {
+      allow read: if isSignedIn() && (uid() == userId || isAdmin());
+
+      allow create: if isSignedIn() && uid() == userId
+        && request.resource.data.uid == userId
+        && request.resource.data.role == 'customer'
+        && request.resource.data.keys().hasOnly(
+             ['uid','email','name','phone','photo','address',
+              'role','createdAt','updatedAt','fcmTokens']);
+
+      allow update: if isSignedIn() && (
+        (
+          uid() == userId
+          && request.resource.data.role == resource.data.role
+          && request.resource.data.uid == resource.data.uid
+          && request.resource.data.email == resource.data.email
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['name','phone','photo','address','updatedAt','fcmTokens'])
+        )
+        || isAdmin()
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // ====== PRODUCTS ======
+    match /products/{productId} {
+      // Customers read enabled products; admin reads all
+      allow read: if (resource.data.enabled == true) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ====== CATEGORIES ======
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ====== BANNERS ======
+    match /banners/{bannerId} {
+      allow read: if (resource.data.enabled == true) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ====== SETTINGS ======
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ====== ORDERS ======
+    // Customer can read their own; admin can read all.
+    // Customer CANNOT write directly — order creation must go through
+    // a controlled client function that ONLY writes to their own userId
+    // with status 'Pending'. Updates are admin-only.
+    match /orders/{orderId} {
+      allow read: if isSignedIn() && (resource.data.userId == uid() || isAdmin());
+
+      allow create: if isSignedIn()
+        && request.resource.data.userId == uid()
+        && request.resource.data.status == 'Pending'
+        && request.resource.data.paymentStatus == 'Unpaid'
+        && request.resource.data.keys().hasAll(
+             ['orderNumber','userId','customerName','phone','address',
+              'items','subtotal','deliveryFee','discount','total',
+              'currency','status','paymentStatus','createdAt'])
+        && request.resource.data.subtotal is number
+        && request.resource.data.subtotal >= 0
+        && request.resource.data.deliveryFee is number
+        && request.resource.data.deliveryFee >= 0
+        && request.resource.data.total is number
+        && request.resource.data.total >= 0
+        && request.resource.data.total
+             == request.resource.data.subtotal
+              + request.resource.data.deliveryFee
+              - request.resource.data.discount
+        && request.resource.data.items is list
+        && request.resource.data.items.size() > 0
+        && request.resource.data.items.size() <= 100;
+
+      allow update, delete: if isAdmin();
+    }
+
+    // ====== NOTIFICATIONS ======
+    match /notifications/{notifId} {
+      allow read: if isSignedIn() && resource.data.userId == uid();
+      allow update: if isSignedIn() && resource.data.userId == uid()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+      allow create, delete: if isAdmin();
+    }
+
+    // ====== AUDIT LOGS ======
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // ====== INVOICES ======
+    match /invoices/{invoiceId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == uid());
+      allow write: if isAdmin();
+    }
+
+    // ====== DEFAULT DENY ======
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

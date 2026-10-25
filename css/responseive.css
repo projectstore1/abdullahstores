@@ -1,0 +1,55 @@
+/* Abdullah Store — Responsive (desktop breakpoints) */
+
+@media(min-width:640px){
+  .product-grid{grid-template-columns:repeat(3,1fr);gap:16px}
+  .category-grid{grid-template-columns:repeat(3,1fr)}
+  .footer-grid{grid-template-columns:repeat(2,1fr)}
+  .hero{padding:64px 24px}
+  .hero h1{font-size:2.6rem}
+  .cart-item{grid-template-columns:100px 1fr auto}
+  .cart-item-img{width:100px;height:100px}
+  .filter-selects{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(min-width:768px){
+  .site-header{position:sticky}
+  .header-inner{gap:20px}
+  .desktop-nav{display:flex;gap:20px;align-items:center}
+  .desktop-nav a{font-size:.92rem;font-weight:600;color:var(--text);
+    padding:8px 4px;position:relative;transition:color .2s}
+  .desktop-nav a:hover,.desktop-nav a.active{color:var(--green)}
+  .desktop-nav a.active::after{content:"";position:absolute;bottom:0;left:0;right:0;
+    height:2px;background:var(--green);border-radius:2px}
+  .mobile-nav{display:none}
+  body{padding-bottom:0}
+  .product-grid{grid-template-columns:repeat(4,1fr)}
+  .category-grid{grid-template-columns:repeat(4,1fr)}
+  .footer-grid{grid-template-columns:repeat(4,1fr)}
+  .checkout-grid{grid-template-columns:2fr 1fr}
+  .pd-grid{grid-template-columns:1fr 1fr;gap:40px}
+  .pd-info h1{font-size:1.9rem}
+  .hero h1{font-size:3rem}
+}
+
+@media(min-width:1024px){
+  .product-grid{grid-template-columns:repeat(5,1fr)}
+  .header-inner{gap:32px}
+  .logo{font-size:1.3rem}
+  .section{padding:48px 0}
+  .section-title{font-size:1.6rem}
+}
+
+@media(min-width:1280px){
+  .product-grid{grid-template-columns:repeat(5,1fr)}
+}
+
+/* HIDE on mobile, SHOW on desktop */
+.desktop-only{display:none}
+@media(min-width:768px){.desktop-only{display:flex}}
+.mobile-only{display:flex}
+@media(min-width:768px){.mobile-only{display:none!important}}
+
+/* Hide search on tiny screens, show a mobile search page instead */
+@media(max-width:400px){
+  .search-form{display:none}
+}

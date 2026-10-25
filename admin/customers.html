@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customers — Abdullah Store Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout" id="adminLayout">
+  <main class="admin-main">
+    <div class="admin-content">
+      <div class="filter-row">
+        <input type="search" id="searchInput" placeholder="Search by name or email...">
+      </div>
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th></th></tr>
+            </thead>
+            <tbody id="customersBody">
+              <tr><td colspan="6" class="admin-empty">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="customerModal" style="display:none">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-title">
+      <span>Customer Details</span>
+      <button id="modalClose" style="color:var(--muted);font-size:1.2rem">✕</button>
+    </div>
+    <div id="customerDetails"></div>
+  </div>
+</div>
+
+<script type="module" src="js/customers.js"></script>
+</body>
+</html>

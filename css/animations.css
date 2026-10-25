@@ -1,0 +1,47 @@
+/* Abdullah Store — Animations */
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.fade-in{animation:fadeIn .4s ease}
+.fade-in-up{animation:fadeInUp .5s ease}
+.fade-in-down{animation:fadeInDown .4s ease}
+.scale-in{animation:scaleIn .35s ease}
+.slide-in-right{animation:slideInRight .4s ease}
+
+.pulse{animation:pulse 2s ease-in-out infinite}
+
+/* Stagger cards */
+.product-grid .product-card{animation:fadeInUp .5s ease backwards}
+.product-grid .product-card:nth-child(1){animation-delay:.02s}
+.product-grid .product-card:nth-child(2){animation-delay:.04s}
+.product-grid .product-card:nth-child(3){animation-delay:.06s}
+.product-grid .product-card:nth-child(4){animation-delay:.08s}
+.product-grid .product-card:nth-child(5){animation-delay:.10s}
+.product-grid .product-card:nth-child(6){animation-delay:.12s}
+.product-grid .product-card:nth-child(7){animation-delay:.14s}
+.product-grid .product-card:nth-child(8){animation-delay:.16s}
+.product-grid .product-card:nth-child(9){animation-delay:.18s}
+.product-grid .product-card:nth-child(10){animation-delay:.20s}
+
+/* Hover lift */
+.hover-lift{transition:transform .25s ease,box-shadow .25s ease}
+.hover-lift:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+
+/* Button press */
+.btn:active{transform:scale(.97)}
+
+/* Image zoom */
+.img-zoom{overflow:hidden}
+.img-zoom img{transition:transform .4s ease}
+.img-zoom:hover img{transform:scale(1.08)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important}
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orders — Abdullah Store Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout" id="adminLayout">
+  <main class="admin-main">
+    <div class="admin-content">
+      <div class="filter-row">
+        <input type="search" id="searchInput" placeholder="Search order # or customer...">
+        <select id="statusFilter">
+          <option value="">All statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Processing">Processing</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr>
+            </thead>
+            <tbody id="ordersBody">
+              <tr><td colspan="7" class="admin-empty">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="orderModal" style="display:none">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-title">
+      <span id="modalTitle">Order Details</span>
+      <button id="modalClose" style="color:var(--muted);font-size:1.2rem">✕</button>
+    </div>
+    <div id="orderDetails"></div>
+  </div>
+</div>
+
+<script type="module" src="js/orders.js"></script>
+</body>
+</html>

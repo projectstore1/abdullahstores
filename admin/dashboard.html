@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard — Abdullah Store Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout" id="adminLayout">
+  <main class="admin-main">
+    <div class="admin-content">
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-card"><div class="stat-card-label">Total Orders</div><div class="stat-card-value skeleton" style="height:26px;width:60%"></div></div>
+        <div class="stat-card"><div class="stat-card-label">Pending</div><div class="stat-card-value skeleton" style="height:26px;width:60%"></div></div>
+        <div class="stat-card"><div class="stat-card-label">Completed</div><div class="stat-card-value skeleton" style="height:26px;width:60%"></div></div>
+        <div class="stat-card"><div class="stat-card-label">Total Products</div><div class="stat-card-value skeleton" style="height:26px;width:60%"></div></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card" style="grid-column:span 2"><div class="stat-card-label">Total Sales</div><div class="stat-card-value" id="totalSales">$0.00<small id="totalSalesNgn">₦0</small></div></div>
+        <div class="stat-card" style="grid-column:span 2"><div class="stat-card-label">Customers</div><div class="stat-card-value" id="customerCount">0</div></div>
+      </div>
+
+      <div class="admin-card">
+        <h3>Quick Actions</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="products.html" class="btn btn-primary">+ Add Product</a>
+          <a href="categories.html" class="btn btn-ghost">+ Add Category</a>
+          <a href="orders.html" class="btn btn-ghost">View Orders</a>
+          <button class="btn btn-accent" id="seedBtn">Seed Demo Data</button>
+        </div>
+        <p style="font-size:.75rem;color:var(--muted);margin-top:8px">Demo data only works if the store is empty.</p>
+      </div>
+
+      <div class="admin-card">
+        <h3>Recent Orders</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Order #</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr>
+            </thead>
+            <tbody id="recentOrdersBody">
+              <tr><td colspan="6" class="admin-empty">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

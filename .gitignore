@@ -1,1 +1,13 @@
-
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+serviceAccountKey.json
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+.env
+.env.*

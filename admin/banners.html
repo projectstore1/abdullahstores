@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banners — Abdullah Store Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout" id="adminLayout">
+  <main class="admin-main">
+    <div class="admin-content">
+      <div class="filter-row">
+        <div style="flex:1"></div>
+        <button class="btn btn-primary" id="addBtn">+ Add Banner</button>
+      </div>
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Image</th><th>Title</th><th>Link</th><th>Status</th><th>Order</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="bannersBody">
+              <tr><td colspan="6" class="admin-empty">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="bannerModal" style="display:none">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="modalTitle">Add Banner</span>
+      <button id="modalClose" style="color:var(--muted);font-size:1.2rem">✕</button>
+    </div>
+    <form id="bannerForm">
+      <input type="hidden" id="bannerId">
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input class="form-input" id="bTitle" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subtitle</label>
+        <input class="form-input" id="bSubtitle">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Image URL</label>
+        <input class="form-input" id="bImage" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Link</label>
+        <input class="form-input" id="bLink" placeholder="products.html">
+      </div>
+      <div class="form-row form-row-2">
+        <div class="form-group">
+          <label class="form-label">Order</label>
+          <input class="form-input" id="bOrder" type="number" value="0">
+        </div>
+        <div class="form-group">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:22px">
+            <input type="checkbox" id="bEnabled" checked> Enabled
+          </label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveBtn">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module" src="js/banners.js"></script>
+</body>
+</html>

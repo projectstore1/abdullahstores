@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Settings — Abdullah Store Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout" id="adminLayout">
+  <main class="admin-main">
+    <div class="admin-content">
+      <div class="admin-card" style="max-width:640px">
+        <h3>Store Settings</h3>
+        <form id="settingsForm">
+          <div class="form-group">
+            <label class="form-label">Store Name</label>
+            <input class="form-input" id="sName">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Logo URL</label>
+            <input class="form-input" id="sLogo" placeholder="https://...">
+          </div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input class="form-input" id="sEmail" type="email">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input class="form-input" id="sPhone" type="tel">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address</label>
+            <textarea class="form-textarea" id="sAddress"></textarea>
+          </div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label class="form-label">Delivery Fee (USD)</label>
+              <input class="form-input" id="sDelivery" type="number" step="0.01" min="0" value="5">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Currency</label>
+              <input class="form-input" id="sCurrency" value="USD" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Announcement</label>
+            <input class="form-input" id="sAnnouncement" placeholder="e.g. Welcome to Abdullah Store!">
+          </div>
+          <div class="form-group">
+            <label class="form-label">USD → NGN Rate (display-only)</label>
+            <input class="form-input" id="sRate" type="number" step="1" min="1" value="1440">
+            <div class="form-hint">Used for display in Naira. 1 USD = X NGN</div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+            <button type="button" class="btn btn-ghost" id="resetBtn">Reset</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">Save Settings</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="js/settings.js"></script>
+</body>
+</html>

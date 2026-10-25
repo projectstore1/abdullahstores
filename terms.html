@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Terms & Conditions — Abdullah Store</title>
+<meta name="theme-color" content="#16A34A">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-page="terms">
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Abdullah<span>Store</span></a>
+    <nav class="desktop-nav desktop-only" style="margin-left:auto">
+      <a href="index.html">Home</a><a href="products.html">Products</a>
+      <a href="categories.html">Categories</a><a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding-top:20px;padding-bottom:40px;max-width:760px">
+  <h1 class="section-title" style="margin-bottom:20px">Terms &amp; Conditions</h1>
+  <div style="background:#fff;padding:24px;border-radius:12px;box-shadow:var(--shadow);line-height:1.8;color:var(--text)">
+    <p><strong>Last updated:</strong> <span id="year"></span></p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">1. Acceptance of Terms</h2>
+    <p>By using Abdullah Store, you agree to these terms. If you do not agree, please do not use our services.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">2. Orders &amp; Payment</h2>
+    <p>All orders are subject to product availability. Prices are shown in USD ($) with NGN (₦) conversion for reference. The final charge is in USD. Payment is Cash on Delivery by default.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">3. Delivery</h2>
+    <p>Orders are delivered within the agreed timeframe. Free delivery applies on orders over $50. Delivery fees may vary by region.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">4. Returns &amp; Refunds</h2>
+    <p>Unused items in original packaging can be returned within 7 days of delivery. Refunds are issued to the original payment method.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">5. Account Responsibility</h2>
+    <p>You are responsible for maintaining the confidentiality of your account credentials. Report any unauthorized access immediately.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">6. Prohibited Use</h2>
+    <p>You may not use this site for any unlawful purpose, attempt to gain unauthorized access, or interfere with the service.</p>
+    <h2 style="font-size:1.1rem;font-weight:800;margin:20px 0 10px">7. Changes to Terms</h2>
+    <p>We may update these terms at any time. Continued use of the site constitutes acceptance of the updated terms.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bottom">© <span id="year2"></span> Abdullah Store. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("year2").textContent = new Date().getFullYear();
+</script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

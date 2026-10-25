@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Invoice — Abdullah Store</title>
+<meta name="theme-color" content="#16A34A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  @media print {
+    .no-print { display: none !important; }
+    body { background: #fff; padding: 0; }
+    .invoice-wrap { box-shadow: none !important; border: none !important; }
+  }
+  .invoice-wrap {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+  }
+</style>
+</head>
+<body data-page="invoice" style="background:#F8FAFC">
+
+<header class="site-header no-print">
+  <div class="header-inner">
+    <a href="index.html" class="logo">Abdullah<span>Store</span></a>
+    <div class="header-actions" style="margin-left:auto">
+      <a href="my-orders.html" class="btn btn-ghost btn-sm">Back to Orders</a>
+      <button class="btn btn-primary btn-sm" onclick="window.print()">Print</button>
+    </div>
+  </div>
+</header>
+
+<div id="invoiceContainer">
+  <div class="invoice-wrap">
+    <div class="skeleton skeleton-line" style="height:28px;width:50%;margin-bottom:20px"></div>
+    <div class="skeleton skeleton-line" style="width:100%;height:100px"></div>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/invoice.js"></script>
+</body>
+</html>
